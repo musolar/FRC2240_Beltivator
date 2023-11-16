@@ -3,13 +3,7 @@
 BeltivatorMotors::BeltivatorMotors() {
     // set second motor to mirror first
     m_follower.Follow(m_leader, true);
-    // set PID coefficients
-    m_pid.SetP(m_pidCoeff.kP);
-    m_pid.SetI(m_pidCoeff.kI);
-    m_pid.SetD(m_pidCoeff.kD);
-    m_pid.SetIZone(m_pidCoeff.kIz);
-    m_pid.SetFF(m_pidCoeff.kFF);
-    m_pid.Set
+    setPidCoeff(m_pidCoeff);
 }
 
 void BeltivatorMotors::setPIDPositionMode() {
@@ -30,4 +24,14 @@ double BeltivatorMotors::getPIDPosition() {
 
 void BeltivatorMotors::setPIDVelocity(double velocity) {
     m_pid.SetReference(velocity, rev::CANSparkMax::ControlType::kVelocity);
+}
+
+void BeltivatorMotors::setPidCoeff(Constants::pidCoeff pid_coeff) {
+    // set PID coefficients
+    m_pid.SetP(pid_coeff.kP);
+    m_pid.SetI(pid_coeff.kI);
+    m_pid.SetD(pid_coeff.kD);
+    m_pid.SetIZone(pid_coeff.kIz);
+    m_pid.SetFF(pid_coeff.kFF);
+    m_pid.SetOutputRange(pid_coeff.kMinOutput, pid_coeff.kMaxOutput);
 }

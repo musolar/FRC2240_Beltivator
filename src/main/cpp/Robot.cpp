@@ -36,6 +36,8 @@ void Robot::AutonomousInit() {}
 void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() {
+  // enable debug mode (displays PID coefficients on smart dashboard)
+  m_beltivator.m_debug = true;
 }
 
 void Robot::TeleopPeriodic() {

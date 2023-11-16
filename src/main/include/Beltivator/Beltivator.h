@@ -1,4 +1,6 @@
 #include "BeltivatorMotors.h"
+#include "frc/smartdashboard/SmartDashboard.h"
+#include "Constants.h"
 
 class Beltivator {
     public:
@@ -10,6 +12,7 @@ class Beltivator {
             kTOP
         };
         void run(PRESET preset, double joystickPos);   // run periodically
+        bool m_debug = false;
     private:
         const double kMAX_POS = 100.0;                 //fully extended position (# of rotations) (may overshoot slightly)
         const double kMIN_POS = 0.0;                   //fully retracted position (# of rotations) (may overshoot slightly)

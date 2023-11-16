@@ -1,7 +1,33 @@
 #include "Beltivator/Beltivator.h"
 
+Beltivator::Beltivator() {
+    if(m_debug) {
+        frc::SmartDashboard::PutNumber("P", 1.0);
+        frc::SmartDashboard::PutNumber("I", 0.0);
+        frc::SmartDashboard::PutNumber("D", 0.0);
+        frc::SmartDashboard::PutNumber("Iz", 0.0);
+        frc::SmartDashboard::PutNumber("FF", 0.0);
+        frc::SmartDashboard::PutNumber("MaxO", 1.0);
+        frc::SmartDashboard::PutNumber("MinO", -1.0);
+    }
+}
+
 // main state machine (runs periodically)
 void Beltivator::run(Beltivator::PRESET preset, double joystickPos) {
+
+    if(m_debug) {
+        Constants::pidCoeff debugPid = {
+            frc::SmartDashboard::GetNumber("P"),
+            frc::SmartDashboard::GetNumber("I"),
+            frc::SmartDashboard::GetNumber("D"),
+            frc::SmartDashboard::GetNumber("Iz"),
+            frc::SmartDashboard::GetNumber("FF"),
+            frc::SmartDashboard::GetNumber("MaxO"),
+            frc::SmartDashboard::GetNumber("MinO")
+        }
+        m_motors.setPidCoeff(debugPid);
+    }
+
     switch(m_state) {
         case kSTART:
             // init state, sets up + immediately transitions to kSTATIC
