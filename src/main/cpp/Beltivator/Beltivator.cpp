@@ -12,6 +12,7 @@ void Beltivator::run(Beltivator::PRESET preset, double joystickPos) {
         case kSTATIC:
             // state used whenever Beltivator is controlled by position PID
             if(joystickPos > kJOYSTICK_THRESHOLD || joystickPos < -kJOYSTICK_THRESHOLD) {
+                //switch to manual control
                 m_motors.setPIDVelocityMode();
                 m_state = kMANUAL;
             } else {

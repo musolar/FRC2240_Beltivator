@@ -18,5 +18,6 @@ class BeltivatorMotors {
         rev::CANSparkMax m_follower{2, rev::CANSparkMax::MotorType::kBrushless};
         rev::SparkMaxPIDController m_pid = m_leader.GetPIDController();
         rev::SparkMaxRelativeEncoder m_encoder = m_leader.GetEncoder();
+        //TODO: configure PID
         pidCoeff m_pidCoeff{0.1, 0.0, 0.0, 0.0, 0.0, -1.0, 1.0};
 };
