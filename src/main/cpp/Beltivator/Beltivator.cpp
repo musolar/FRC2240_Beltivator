@@ -1,32 +1,11 @@
 #include "Beltivator/Beltivator.h"
 
-Beltivator::Beltivator() {
-    if(m_debug) {
-        frc::SmartDashboard::PutNumber("P", 1.0);
-        frc::SmartDashboard::PutNumber("I", 0.0);
-        frc::SmartDashboard::PutNumber("D", 0.0);
-        frc::SmartDashboard::PutNumber("Iz", 0.0);
-        frc::SmartDashboard::PutNumber("FF", 0.0);
-        frc::SmartDashboard::PutNumber("MaxO", 1.0);
-        frc::SmartDashboard::PutNumber("MinO", -1.0);
-    }
+void Beltivator::setPidCoeff(Constants::pidCoeff coeff) {
+    m_motors.setPidCoeff(coeff);
 }
 
 // main state machine (runs periodically)
 void Beltivator::run(Beltivator::PRESET preset, double joystickPos) {
-
-    if(m_debug) {
-        Constants::pidCoeff debugPid = {
-            frc::SmartDashboard::GetNumber("P"),
-            frc::SmartDashboard::GetNumber("I"),
-            frc::SmartDashboard::GetNumber("D"),
-            frc::SmartDashboard::GetNumber("Iz"),
-            frc::SmartDashboard::GetNumber("FF"),
-            frc::SmartDashboard::GetNumber("MaxO"),
-            frc::SmartDashboard::GetNumber("MinO")
-        }
-        m_motors.setPidCoeff(debugPid);
-    }
 
     switch(m_state) {
         case kSTART:
@@ -41,12 +20,21 @@ void Beltivator::run(Beltivator::PRESET preset, double joystickPos) {
                 //switch to manual control
                 m_motors.setPIDVelocityMode();
                 m_state = kMANUAL;
+                frc::SmartDashboard::PutString("PrintMessage", "Manual mode");
             } else {
                 if(preset != kNONE) {
                     // set preset
                     m_position = kPRESETS[preset];
                 }
                 m_motors.setPIDPosition(m_position);
+                /*
+                if(m_position != 0.0){
+                    frc::SmartDashboard::PutString("PrintMessage", "Error!");
+                }else{
+                    frc::SmartDashboard::PutString("PrintMessage", "yes");
+                }
+                */
+               //position is always zero, not oscillating
             }
             break;
         case kMANUAL:

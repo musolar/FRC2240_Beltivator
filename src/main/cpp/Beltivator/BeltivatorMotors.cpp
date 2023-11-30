@@ -2,6 +2,8 @@
 
 BeltivatorMotors::BeltivatorMotors() {
     // set second motor to mirror first
+    m_leader.SetSmartCurrentLimit(30);
+    m_follower.SetSmartCurrentLimit(30);
     m_follower.Follow(m_leader, true);
     setPidCoeff(m_pidCoeff);
 }

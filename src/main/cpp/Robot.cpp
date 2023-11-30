@@ -36,8 +36,20 @@ void Robot::AutonomousInit() {}
 void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() {
-  // enable debug mode (displays PID coefficients on smart dashboard)
-  m_beltivator.m_debug = true;
+
+Constants::pidCoeff debugPid = {
+            frc::SmartDashboard::GetNumber("P", 0.0),
+            frc::SmartDashboard::GetNumber("I", 0.0),
+            frc::SmartDashboard::GetNumber("D", 0.0),
+            frc::SmartDashboard::GetNumber("Iz", 0.0),
+            frc::SmartDashboard::GetNumber("FF", 0.0),
+            frc::SmartDashboard::GetNumber("MaxO", 1.0),
+            frc::SmartDashboard::GetNumber("MinO", -1.0)
+        };
+
+        //frc::SmartDashboard::PutString("PrintMessage", std::to_string(debugPid.kP));
+
+        m_beltivator.setPidCoeff(debugPid);
 }
 
 void Robot::TeleopPeriodic() {
@@ -47,13 +59,19 @@ void Robot::TeleopPeriodic() {
   //shooter.shoot(distance);
   m_preset = Beltivator::kNONE;
   if(m_stick.GetAButtonPressed()){
+    frc::SmartDashboard::PutString("PrintMessage", "Bottom");
     m_preset = Beltivator::kBOTTOM;
   } else if(m_stick.GetBButtonPressed()){
+    frc::SmartDashboard::PutString("PrintMessage", "Top");
     m_preset = Beltivator::kTOP;
   } else if(m_stick.GetXButtonPressed()){
+    frc::SmartDashboard::PutString("PrintMessage", "Half");
     m_preset = Beltivator::kHALF;
   }
-  m_beltivator.run(m_preset, m_stick.GetRightY());
+  double right_y = -m_stick.GetRightY();
+  frc::SmartDashboard::PutNumber("RightY", right_y);
+  m_beltivator.run(m_preset, right_y);
+
 }
 
 void Robot::DisabledInit() {}

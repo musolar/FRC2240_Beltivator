@@ -1,3 +1,4 @@
+#pragma once
 #include "Constants.h"
 #include <rev/CANSparkMax.h>
 
@@ -7,7 +8,7 @@ class BeltivatorMotors {
     public:
         // abstract interface
         BeltivatorMotors();
-        void setPidCoeff(Constants::pidCoeff pid_coeff)
+        void setPidCoeff(Constants::pidCoeff pid_coeff);
         void setPIDPositionMode();
         void setPIDVelocityMode();
         void setPIDPosition(double rotations);
@@ -20,5 +21,5 @@ class BeltivatorMotors {
         rev::SparkMaxPIDController m_pid = m_leader.GetPIDController();
         rev::SparkMaxRelativeEncoder m_encoder = m_leader.GetEncoder();
         //TODO: configure PID
-        Constants::pidCoeff m_pidCoeff{0.1, 0.0, 0.0, 0.0, 0.0, -1.0, 1.0};
+        Constants::pidCoeff m_pidCoeff{0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 1.0};
 };
