@@ -19,7 +19,7 @@ class Beltivator {
         const double kMIN_POS = 0.0;                   //fully retracted position (# of rotations) (may overshoot slightly)
         const double kPRESETS[3] = {0.0, 50.0, 100.0}; //array of presets (# of rotations) - maps to PRESET enum
         const double kJOYSTICK_THRESHOLD = 0.05;       //threshold to consider joystick active
-        const double kVEL_MULT = 25.0;                 //maximum rotations/second for joystick control
+        const double kVEL_MULT = 1.0;                 //maximum rotations/second for joystick control
         enum STATE {
             kSTART,
             kSTATIC,

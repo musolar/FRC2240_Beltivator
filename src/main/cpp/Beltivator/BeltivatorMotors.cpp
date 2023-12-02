@@ -2,18 +2,10 @@
 
 BeltivatorMotors::BeltivatorMotors() {
     // set second motor to mirror first
-    m_leader.SetSmartCurrentLimit(30);
-    m_follower.SetSmartCurrentLimit(30);
+    m_leader.SetSmartCurrentLimit(m_currentLimit);
+    m_follower.SetSmartCurrentLimit(m_currentLimit);
     m_follower.Follow(m_leader, true);
     setPidCoeff(m_pidCoeff);
-}
-
-void BeltivatorMotors::setPIDPositionMode() {
-    // not needed
-}
-
-void BeltivatorMotors::setPIDVelocityMode() {
-    // not needed
 }
 
 void BeltivatorMotors::setPIDPosition(double rotations) {
@@ -25,7 +17,7 @@ double BeltivatorMotors::getPIDPosition() {
 }
 
 void BeltivatorMotors::setPIDVelocity(double velocity) {
-    m_pid.SetReference(velocity, rev::CANSparkMax::ControlType::kVelocity);
+    m_pid.SetReference(velocity, rev::CANSparkMax::ControlType::kDutyCycle);
 }
 
 void BeltivatorMotors::setPidCoeff(Constants::pidCoeff pid_coeff) {

@@ -6,11 +6,10 @@ void Beltivator::setPidCoeff(Constants::pidCoeff coeff) {
 
 // main state machine (runs periodically)
 void Beltivator::run(Beltivator::PRESET preset, double joystickPos) {
-
+    
     switch(m_state) {
         case kSTART:
             // init state, sets up + immediately transitions to kSTATIC
-            m_motors.setPIDPositionMode();
             m_position = kMIN_POS;
             m_state = kSTATIC;
             break;
@@ -18,23 +17,12 @@ void Beltivator::run(Beltivator::PRESET preset, double joystickPos) {
             // state used whenever Beltivator is controlled by position PID
             if(joystickPos > kJOYSTICK_THRESHOLD || joystickPos < -kJOYSTICK_THRESHOLD) {
                 //switch to manual control
-                m_motors.setPIDVelocityMode();
                 m_state = kMANUAL;
                 frc::SmartDashboard::PutString("PrintMessage", "Manual mode");
-            } else {
-                if(preset != kNONE) {
-                    // set preset
-                    m_position = kPRESETS[preset];
-                }
+            } else if(preset != kNONE) {
+                // set preset
+                m_position = kPRESETS[preset];
                 m_motors.setPIDPosition(m_position);
-                /*
-                if(m_position != 0.0){
-                    frc::SmartDashboard::PutString("PrintMessage", "Error!");
-                }else{
-                    frc::SmartDashboard::PutString("PrintMessage", "yes");
-                }
-                */
-               //position is always zero, not oscillating
             }
             break;
         case kMANUAL:
@@ -42,11 +30,13 @@ void Beltivator::run(Beltivator::PRESET preset, double joystickPos) {
             double encoderPos = m_motors.getPIDPosition();
             if(joystickPos > -kJOYSTICK_THRESHOLD && joystickPos < kJOYSTICK_THRESHOLD) {
                 // revert to kSTATIC (position PID control)
-                m_motors.setPIDPositionMode();
+                frc::SmartDashboard::PutString("PrintMessage", "Static mode");
                 m_position = encoderPos;
+                m_motors.setPIDPosition(m_position);
                 m_state = kSTATIC;
-            } else if((joystickPos < 0 && encoderPos > kMIN_POS) || (joystickPos > 0 && encoderPos < kMAX_POS)) {
-                //limit max/min position
+            } else if((joystickPos < 0 && encoderPos < kMIN_POS) || (joystickPos > 0 && encoderPos > kMAX_POS)) {
+                m_motors.setPIDVelocity(0.0); //exceeded limit
+            } else {
                 m_motors.setPIDVelocity(kVEL_MULT * joystickPos);
             }
             break;

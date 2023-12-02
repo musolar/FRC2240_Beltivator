@@ -9,8 +9,6 @@ class BeltivatorMotors {
         // abstract interface
         BeltivatorMotors();
         void setPidCoeff(Constants::pidCoeff pid_coeff);
-        void setPIDPositionMode();
-        void setPIDVelocityMode();
         void setPIDPosition(double rotations);
         double getPIDPosition();
         void setPIDVelocity(double velocity);
@@ -22,4 +20,5 @@ class BeltivatorMotors {
         rev::SparkMaxRelativeEncoder m_encoder = m_leader.GetEncoder();
         //TODO: configure PID
         Constants::pidCoeff m_pidCoeff{0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 1.0};
+        const int m_currentLimit = 30;
 };

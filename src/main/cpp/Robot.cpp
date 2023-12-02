@@ -8,7 +8,15 @@
 #include <fmt/core.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 
-void Robot::RobotInit() {}
+void Robot::RobotInit() {
+  frc::SmartDashboard::PutNumber("P", 0.0);
+  frc::SmartDashboard::PutNumber("I", 0.0);
+  frc::SmartDashboard::PutNumber("D", 0.0);
+  frc::SmartDashboard::PutNumber("Iz", 0.0);
+  frc::SmartDashboard::PutNumber("FF", 0.0);
+  frc::SmartDashboard::PutNumber("MinO", -1.0);
+  frc::SmartDashboard::PutNumber("MaxO", 1.0);
+}
 
 /**
  * This function is called every 20 ms, no matter the mode. Use
@@ -37,31 +45,25 @@ void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() {
 
-Constants::pidCoeff debugPid = {
-            frc::SmartDashboard::GetNumber("P", 0.0),
-            frc::SmartDashboard::GetNumber("I", 0.0),
-            frc::SmartDashboard::GetNumber("D", 0.0),
-            frc::SmartDashboard::GetNumber("Iz", 0.0),
-            frc::SmartDashboard::GetNumber("FF", 0.0),
-            frc::SmartDashboard::GetNumber("MaxO", 1.0),
-            frc::SmartDashboard::GetNumber("MinO", -1.0)
-        };
-
-        //frc::SmartDashboard::PutString("PrintMessage", std::to_string(debugPid.kP));
+  Constants::pidCoeff debugPid = {
+    frc::SmartDashboard::GetNumber("P", 0.0),
+    frc::SmartDashboard::GetNumber("I", 0.0),
+    frc::SmartDashboard::GetNumber("D", 0.0),
+    frc::SmartDashboard::GetNumber("Iz", 0.0),
+    frc::SmartDashboard::GetNumber("FF", 0.0),
+    frc::SmartDashboard::GetNumber("MinO", -1.0),
+    frc::SmartDashboard::GetNumber("MaxO", 1.0)
+  };
 
         m_beltivator.setPidCoeff(debugPid);
 }
 
 void Robot::TeleopPeriodic() {
-  //std::cout << "test";
-  // Calculate distance to target and shoot
-  //auto distance = vision.getDistanceToTarget();
-  //shooter.shoot(distance);
   m_preset = Beltivator::kNONE;
   if(m_stick.GetAButtonPressed()){
     frc::SmartDashboard::PutString("PrintMessage", "Bottom");
     m_preset = Beltivator::kBOTTOM;
-  } else if(m_stick.GetBButtonPressed()){
+  } else if(m_stick.GetYButtonPressed()){
     frc::SmartDashboard::PutString("PrintMessage", "Top");
     m_preset = Beltivator::kTOP;
   } else if(m_stick.GetXButtonPressed()){
@@ -69,7 +71,6 @@ void Robot::TeleopPeriodic() {
     m_preset = Beltivator::kHALF;
   }
   double right_y = -m_stick.GetRightY();
-  frc::SmartDashboard::PutNumber("RightY", right_y);
   m_beltivator.run(m_preset, right_y);
 
 }
