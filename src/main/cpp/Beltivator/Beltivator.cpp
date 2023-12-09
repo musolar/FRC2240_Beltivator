@@ -7,6 +7,9 @@ void Beltivator::setPidCoeff(Constants::pidCoeff coeff) {
 // main state machine (runs periodically)
 void Beltivator::run(Beltivator::PRESET preset, double joystickPos) {
     
+    //temp for testing
+    m_motors.periodicPrint();
+
     switch(m_state) {
         case kSTART:
             // init state, sets up + immediately transitions to kSTATIC

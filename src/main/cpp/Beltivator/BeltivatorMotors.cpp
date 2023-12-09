@@ -1,4 +1,6 @@
 #include "Beltivator\BeltivatorMotors.h"
+//temp for testing
+#include <frc/smartdashboard/SmartDashboard.h>
 
 BeltivatorMotors::BeltivatorMotors() {
     // set second motor to mirror first
@@ -6,6 +8,11 @@ BeltivatorMotors::BeltivatorMotors() {
     m_follower.SetSmartCurrentLimit(m_currentLimit);
     m_follower.Follow(m_leader, true);
     setPidCoeff(m_pidCoeff);
+}
+
+//temp for testing
+void BeltivatorMotors::periodicPrint() {
+    frc::SmartDashboard::PutNumber("Current", m_leader.GetOutputCurrent());
 }
 
 void BeltivatorMotors::setPIDPosition(double rotations) {

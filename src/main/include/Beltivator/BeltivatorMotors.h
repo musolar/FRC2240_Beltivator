@@ -8,6 +8,8 @@ class BeltivatorMotors {
     public:
         // abstract interface
         BeltivatorMotors();
+        //temp for testing
+        void periodicPrint();
         void setPidCoeff(Constants::pidCoeff pid_coeff);
         void setPIDPosition(double rotations);
         double getPIDPosition();
@@ -20,5 +22,5 @@ class BeltivatorMotors {
         rev::SparkMaxRelativeEncoder m_encoder = m_leader.GetEncoder();
         //TODO: configure PID
         Constants::pidCoeff m_pidCoeff{0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 1.0};
-        const int m_currentLimit = 30;
+        const int m_currentLimit = 20;
 };
