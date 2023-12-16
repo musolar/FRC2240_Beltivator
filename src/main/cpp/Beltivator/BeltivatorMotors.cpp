@@ -4,6 +4,10 @@
 
 BeltivatorMotors::BeltivatorMotors() {
     // set second motor to mirror first
+    m_leader.EnableSoftLimit(rev::CANSparkMax::SoftLimitDirection::kForward, true);
+    m_leader.EnableSoftLimit(rev::CANSparkMax::SoftLimitDirection::kReverse, true);
+    m_leader.SetSoftLimit(rev::CANSparkMax::SoftLimitDirection::kForward, top) 	;
+    m_leader.SetSoftLimit(rev::CANSparkMax::SoftLimitDirection::kReverse, bot);
     m_leader.SetSmartCurrentLimit(m_currentLimit);
     m_follower.SetSmartCurrentLimit(m_currentLimit);
     m_follower.Follow(m_leader, true);

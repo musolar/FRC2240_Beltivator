@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "Robot.h"
+#include "Beltivator/BeltivatorMotors.h"
 
 #include <fmt/core.h>
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -15,7 +16,7 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutNumber("Iz", 0.0);
   frc::SmartDashboard::PutNumber("FF", 0.0);
   frc::SmartDashboard::PutNumber("MinO", -1.0);
-  frc::SmartDashboard::PutNumber("MaxO", 1.0);
+  frc::SmartDashboard::PutNumber("MaxO", 1.0);  
 }
 
 /**
@@ -60,7 +61,7 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic() {
   m_preset = Beltivator::kNONE;
-  if(m_stick.GetAButtonPressed()){
+  if(m_stick.GetXButtonPressed()){
     frc::SmartDashboard::PutString("PrintMessage", "Bottom");
     m_preset = Beltivator::kBOTTOM;
   } else if(m_stick.GetYButtonPressed()){
@@ -70,11 +71,36 @@ void Robot::TeleopPeriodic() {
     frc::SmartDashboard::PutString("PrintMessage", "Half");
     m_preset = Beltivator::kHALF;
   }
-  double right_y = -m_stick.GetRightY();
-  m_beltivator.run(m_preset, right_y);
-
-
+  //double right_y = -m_stick.GetRightY();
+  if (m_stick.GetAButtonPressed())
+  {
+    testing = true;
+  }
+  if (testing)
+  {
+    //frc::SmartDashboard::PutBoolean("testing", testing);
+    if (m_beltivator.m_motors.m_encoder.GetPosition() < 10)
+    {
+      right_y = .75;
+      if (lock==false)
+      {
+        count++;
+        lock = true;
+      }
+    }
+    else if (m_beltivator.m_motors.m_encoder.GetPosition() > 95)
+    {
+      right_y = -.75;
+      lock = false;
+    }
+     
+    m_beltivator.run(m_preset, right_y);
+  }
+  
+  frc::SmartDashboard::PutNumber("Position", m_beltivator.m_motors.m_encoder.GetPosition());
+  frc::SmartDashboard::PutNumber("Count", count);
 }
+
 
 void Robot::DisabledInit() {}
 
