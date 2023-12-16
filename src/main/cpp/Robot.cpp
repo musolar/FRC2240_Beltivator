@@ -16,7 +16,7 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutNumber("Iz", 0.0);
   frc::SmartDashboard::PutNumber("FF", 0.0);
   frc::SmartDashboard::PutNumber("MinO", -1.0);
-  frc::SmartDashboard::PutNumber("MaxO", 1.0);  
+  frc::SmartDashboard::PutNumber("MaxO", 1.0);
 }
 
 /**
@@ -56,12 +56,12 @@ void Robot::TeleopInit() {
     frc::SmartDashboard::GetNumber("MaxO", 1.0)
   };
 
-        m_beltivator.setPidCoeff(debugPid);
+  m_beltivator.setPidCoeff(debugPid);
+  m_preset = Beltivator::kNONE;
 }
 
 void Robot::TeleopPeriodic() {
-  m_preset = Beltivator::kNONE;
-  if(m_stick.GetXButtonPressed()){
+  if(m_stick.GetAButtonPressed()){
     frc::SmartDashboard::PutString("PrintMessage", "Bottom");
     m_preset = Beltivator::kBOTTOM;
   } else if(m_stick.GetYButtonPressed()){
@@ -71,12 +71,16 @@ void Robot::TeleopPeriodic() {
     frc::SmartDashboard::PutString("PrintMessage", "Half");
     m_preset = Beltivator::kHALF;
   }
-  //double right_y = -m_stick.GetRightY();
-  if (m_stick.GetAButtonPressed())
+  double right_y = -m_stick.GetRightY();
+  if(abs(right_y) > 0.05) {
+    m_preset = Beltivator::kNONE;
+  }
+  frc::SmartDashboard::PutNumber("RightY", right_y);
+/*  if (m_stick.GetAButtonPressed())
   {
     testing = true;
   }
-  if (testing)
+*/  if (testing)
   {
     //frc::SmartDashboard::PutBoolean("testing", testing);
     if (m_beltivator.m_motors.m_encoder.GetPosition() < 10)
@@ -94,9 +98,10 @@ void Robot::TeleopPeriodic() {
       lock = false;
     }
      
-    m_beltivator.run(m_preset, right_y);
   }
+  m_beltivator.run(m_preset, right_y);
   
+  frc::SmartDashboard::PutNumber("Preset", m_preset);
   frc::SmartDashboard::PutNumber("Position", m_beltivator.m_motors.m_encoder.GetPosition());
   frc::SmartDashboard::PutNumber("Count", count);
 }

@@ -7,7 +7,7 @@
 class BeltivatorMotors {
     public:
         // abstract interface
-        BeltivatorMotors();
+        BeltivatorMotors(double top, double bot);
         //temp for testing
         void periodicPrint();
         void setPidCoeff(Constants::pidCoeff pid_coeff);
@@ -21,12 +21,10 @@ class BeltivatorMotors {
 
     private:
         // CAN Spark Max-specific details
-        const double top = 100;
-        const double bot = 5;
         rev::SparkMaxPIDController m_pid = m_leader.GetPIDController();
         
     
         //TODO: configure PID
-        Constants::pidCoeff m_pidCoeff{0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 1.0};
+        Constants::pidCoeff m_pidCoeff{0.9, 0.0, 0.1, 0.0, 0.0, -1.0, 1.0};
         const int m_currentLimit = 20;
 };

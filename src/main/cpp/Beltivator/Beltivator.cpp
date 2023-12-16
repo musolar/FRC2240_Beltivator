@@ -34,13 +34,25 @@ void Beltivator::run(Beltivator::PRESET preset, double joystickPos) {
             if(joystickPos > -kJOYSTICK_THRESHOLD && joystickPos < kJOYSTICK_THRESHOLD) {
                 // revert to kSTATIC (position PID control)
                 frc::SmartDashboard::PutString("PrintMessage", "Static mode");
-                m_position = encoderPos;
+                double bounce = kBOUNCE * m_direction;
+                frc::SmartDashboard::PutNumber("Bounce", bounce);
+                m_position = encoderPos + bounce;
+                if(m_position > kMAX_POS) {
+                    m_position = kMAX_POS;
+                } else if(m_position < kMIN_POS) {
+                    m_position = kMIN_POS;
+                }
                 m_motors.setPIDPosition(m_position);
                 m_state = kSTATIC;
             } else if((joystickPos < 0 && encoderPos < kMIN_POS) || (joystickPos > 0 && encoderPos > kMAX_POS)) {
                 m_motors.setPIDVelocity(0.0); //exceeded limit
             } else {
                 m_motors.setPIDVelocity(kVEL_MULT * joystickPos);
+                if(joystickPos < 0) {
+                    m_direction = -1.0;
+                } else {
+                    m_direction = 1.0;
+                }
             }
             break;
     }

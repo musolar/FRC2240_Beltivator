@@ -2,7 +2,7 @@
 //temp for testing
 #include <frc/smartdashboard/SmartDashboard.h>
 
-BeltivatorMotors::BeltivatorMotors() {
+BeltivatorMotors::BeltivatorMotors(double top, double bot) {
     // set second motor to mirror first
     m_leader.EnableSoftLimit(rev::CANSparkMax::SoftLimitDirection::kForward, true);
     m_leader.EnableSoftLimit(rev::CANSparkMax::SoftLimitDirection::kReverse, true);
