@@ -10,6 +10,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 
 void Robot::RobotInit() {
+  /*
   frc::SmartDashboard::PutNumber("P", 0.0);
   frc::SmartDashboard::PutNumber("I", 0.0);
   frc::SmartDashboard::PutNumber("D", 0.0);
@@ -17,6 +18,7 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutNumber("FF", 0.0);
   frc::SmartDashboard::PutNumber("MinO", -1.0);
   frc::SmartDashboard::PutNumber("MaxO", 1.0);
+  */
 }
 
 /**
@@ -45,7 +47,7 @@ void Robot::AutonomousInit() {}
 void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() {
-
+/*
   Constants::pidCoeff debugPid = {
     frc::SmartDashboard::GetNumber("P", 0.0),
     frc::SmartDashboard::GetNumber("I", 0.0),
@@ -55,55 +57,29 @@ void Robot::TeleopInit() {
     frc::SmartDashboard::GetNumber("MinO", -1.0),
     frc::SmartDashboard::GetNumber("MaxO", 1.0)
   };
-
   m_beltivator.setPidCoeff(debugPid);
+*/
   m_preset = Beltivator::kNONE;
 }
 
 void Robot::TeleopPeriodic() {
   if(m_stick.GetAButtonPressed()){
-    frc::SmartDashboard::PutString("PrintMessage", "Bottom");
+    // frc::SmartDashboard::PutString("PrintMessage", "Bottom");
     m_preset = Beltivator::kBOTTOM;
   } else if(m_stick.GetYButtonPressed()){
-    frc::SmartDashboard::PutString("PrintMessage", "Top");
+    // frc::SmartDashboard::PutString("PrintMessage", "Top");
     m_preset = Beltivator::kTOP;
   } else if(m_stick.GetXButtonPressed()){
-    frc::SmartDashboard::PutString("PrintMessage", "Half");
+    // frc::SmartDashboard::PutString("PrintMessage", "Half");
     m_preset = Beltivator::kHALF;
   }
   double right_y = -m_stick.GetRightY();
   if(abs(right_y) > 0.05) {
     m_preset = Beltivator::kNONE;
   }
-  frc::SmartDashboard::PutNumber("RightY", right_y);
-/*  if (m_stick.GetAButtonPressed())
-  {
-    testing = true;
-  }
-*/  if (testing)
-  {
-    //frc::SmartDashboard::PutBoolean("testing", testing);
-    if (m_beltivator.m_motors.m_encoder.GetPosition() < 10)
-    {
-      right_y = .75;
-      if (lock==false)
-      {
-        count++;
-        lock = true;
-      }
-    }
-    else if (m_beltivator.m_motors.m_encoder.GetPosition() > 95)
-    {
-      right_y = -.75;
-      lock = false;
-    }
-     
-  }
   m_beltivator.run(m_preset, right_y);
   
-  frc::SmartDashboard::PutNumber("Preset", m_preset);
-  frc::SmartDashboard::PutNumber("Position", m_beltivator.m_motors.m_encoder.GetPosition());
-  frc::SmartDashboard::PutNumber("Count", count);
+  // frc::SmartDashboard::PutNumber("Preset", m_preset);
 }
 
 

@@ -14,11 +14,6 @@ BeltivatorMotors::BeltivatorMotors(double top, double bot) {
     setPidCoeff(m_pidCoeff);
 }
 
-//temp for testing
-void BeltivatorMotors::periodicPrint() {
-    frc::SmartDashboard::PutNumber("Current", m_leader.GetOutputCurrent());
-}
-
 void BeltivatorMotors::setPIDPosition(double rotations) {
     m_pid.SetReference(rotations, rev::CANSparkMax::ControlType::kPosition);
 }

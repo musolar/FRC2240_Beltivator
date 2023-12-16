@@ -31,6 +31,4 @@ class Robot : public frc::TimedRobot {
   frc::XboxController m_stick{0};
   bool testing = false;
   double right_y;
-  int count = 0;
-  bool lock = false;
   };
