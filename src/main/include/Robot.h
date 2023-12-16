@@ -29,4 +29,6 @@ class Robot : public frc::TimedRobot {
   Beltivator m_beltivator;
   Beltivator::PRESET m_preset = Beltivator::kBOTTOM;
   frc::XboxController m_stick{0};
+  bool testing = false;
+  double right_y;
   };

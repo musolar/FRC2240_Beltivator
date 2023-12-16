@@ -2,17 +2,16 @@
 //temp for testing
 #include <frc/smartdashboard/SmartDashboard.h>
 
-BeltivatorMotors::BeltivatorMotors() {
+BeltivatorMotors::BeltivatorMotors(double top, double bot) {
     // set second motor to mirror first
+    m_leader.EnableSoftLimit(rev::CANSparkMax::SoftLimitDirection::kForward, true);
+    m_leader.EnableSoftLimit(rev::CANSparkMax::SoftLimitDirection::kReverse, true);
+    m_leader.SetSoftLimit(rev::CANSparkMax::SoftLimitDirection::kForward, top) 	;
+    m_leader.SetSoftLimit(rev::CANSparkMax::SoftLimitDirection::kReverse, bot);
     m_leader.SetSmartCurrentLimit(m_currentLimit);
     m_follower.SetSmartCurrentLimit(m_currentLimit);
     m_follower.Follow(m_leader, true);
     setPidCoeff(m_pidCoeff);
-}
-
-//temp for testing
-void BeltivatorMotors::periodicPrint() {
-    frc::SmartDashboard::PutNumber("Current", m_leader.GetOutputCurrent());
 }
 
 void BeltivatorMotors::setPIDPosition(double rotations) {
